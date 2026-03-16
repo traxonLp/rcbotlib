@@ -1,4 +1,4 @@
-package rcbotframework
+package rcbotlib
 
 import (
 	"encoding/base64"
@@ -11,7 +11,7 @@ import (
 const protocolVersion = "11.0.0"
 
 // Connect establishes an authenticated connection to an rcrs server.
-// If this fails, you're fucked lol
+// If this fails, you're fucked
 func Connect(host, user, pass, token string) (*Connection, error) {
 	conn, err := dial(host, user, pass, token)
 	if err != nil {

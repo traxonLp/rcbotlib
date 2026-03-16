@@ -1,4 +1,4 @@
-package rcbotframework
+package rcbotlib
 
 import (
 	"bytes"
