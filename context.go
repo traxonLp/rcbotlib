@@ -7,6 +7,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 
@@ -136,4 +137,27 @@ func (c *Context) updateDNS(infos []DnsInfo) {
 	for _, info := range infos {
 		c.dns[info.ID] = info
 	}
+}
+
+// SetProfilePicture uploads a profile picture from your ahh pc
+func (c *Context) SetProfilePicture(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	result, err := c.UploadFile(data, filepath.Base(path))
+	if err != nil {
+		return err
+	}
+	body, _ := json.Marshal(map[string]string{"upload_id": result["id"].(string)})
+	resp, err := c.httpClient.Post(c.baseURL+"/api/users/pfp", "application/json", bytes.NewReader(body))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("HTTP %d: %s", resp.StatusCode, b)
+	}
+	return nil
 }
