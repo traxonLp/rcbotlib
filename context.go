@@ -160,8 +160,8 @@ func (c *Context) SetProfilePicture(path string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		b, _ := io.ReadAll(resp.Body)
+	b, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode >= 400 {
 		return fmt.Errorf("HTTP %d: %s", resp.StatusCode, b)
 	}
 	return nil
