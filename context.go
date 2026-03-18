@@ -116,8 +116,13 @@ func (c *Context) UploadFile(data []byte, filename string) (map[string]interface
 	}
 	defer resp.Body.Close()
 
+	b, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("HTTP %d: %s", resp.StatusCode, b)
+	}
+
 	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	json.Unmarshal(b, &result)
 	return result, nil
 }
 
