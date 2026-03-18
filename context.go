@@ -117,7 +117,7 @@ func (c *Context) UploadFile(data []byte, filename string) (map[string]interface
 	defer resp.Body.Close()
 
 	b, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return nil, fmt.Errorf("HTTP %d: %s", resp.StatusCode, b)
 	}
 
