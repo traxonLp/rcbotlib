@@ -150,7 +150,7 @@ func (c *Context) SetProfilePicture(path string) error {
 		return err
 	}
 	body, _ := json.Marshal(map[string]string{"upload_id": result["id"].(string)})
-	resp, err := c.httpClient.Post(c.baseURL+"/api/users/pfp", "application/json", bytes.NewReader(body))
+	resp, err := c.httpClient.Post(c.baseURL+"/api/register_user_icon", "application/json", bytes.NewReader(body))
 	if err != nil {
 		return err
 	}
