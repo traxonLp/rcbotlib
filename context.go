@@ -26,10 +26,10 @@ type Context struct {
 	dns        map[int]DnsInfo
 }
 
-func newContext(conn *websocket.Conn, host, token string, userInfo DnsInfo) *Context {
+func newContext(conn *websocket.Conn, host, token, user, pass string, userInfo DnsInfo) *Context {
 	return &Context{
 		conn:       conn,
-		httpClient: newHTTPClient(token),
+		httpClient: newHTTPClient(token, user, pass),
 		baseURL:    fmt.Sprintf("https://%s", host),
 		UserInfo:   userInfo,
 		dns:        make(map[int]DnsInfo),

@@ -18,7 +18,7 @@ func Connect(host, user, pass, token string) (*Connection, error) {
 		return nil, err
 	}
 
-	ctx, err := handshake(conn, host, token)
+	ctx, err := handshake(conn, host, token, user, pass)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func dial(host, user, pass, token string) (*websocket.Conn, error) {
 	return conn, nil
 }
 
-func handshake(conn *websocket.Conn, host, token string) (*Context, error) {
+func handshake(conn *websocket.Conn, host, token, user, pass string) (*Context, error) {
 	var hs map[string]interface{}
 	if err := conn.ReadJSON(&hs); err != nil {
 		return nil, fmt.Errorf("handshake read failed: %w", err)
@@ -77,5 +77,5 @@ func handshake(conn *websocket.Conn, host, token string) (*Context, error) {
 		return nil, fmt.Errorf("failed to parse user info: %w", err)
 	}
 
-	return newContext(conn, host, token, userInfo), nil
+	return newContext(conn, host, token, user, pass, userInfo), nil
 }
